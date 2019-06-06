@@ -110,7 +110,7 @@ class PIVX_FakeStakeTest(NavCoinTestFramework):
         coinbase.rehash()
 
         # Create Block with coinbase
-        block = create_block(int(hashPrevBlock, 16), coinbase, nTime)
+        block = create_block(int(hashPrevBlock, 16), coinbase, nTime, self.nodes[0].computeblockversion())
 
         # Find valid kernel hash - Create a new private key used for block signing.
         if not block.solve_stake(stakingPrevOuts):
