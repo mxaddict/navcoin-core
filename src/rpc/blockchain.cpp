@@ -1632,6 +1632,12 @@ UniValue reconsiderblock(const UniValue& params, bool fHelp)
     return NullUniValue;
 }
 
+UniValue computeblockversion(const UniValue& params, bool fHelp)
+{
+    return ComputeBlockVersion(chainActive.Tip(), Params().GetConsensus());
+}
+
+
 UniValue waitforblockheight(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
@@ -1707,6 +1713,7 @@ static const CRPCCommand commands[] =
     { "hidden",             "invalidateblock",        &invalidateblock,        true  },
     { "hidden",             "reconsiderblock",        &reconsiderblock,        true  },
     { "hidden",             "waitforblockheight",     &waitforblockheight,     true, },
+    { "hidden",             "computeblockversion",    &computeblockversion,    true, },
 };
 
 void RegisterBlockchainRPCCommands(CRPCTable &tableRPC)
