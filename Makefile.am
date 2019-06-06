@@ -216,6 +216,28 @@ dist_noinst_SCRIPTS = autogen.sh
 
 EXTRA_DIST = $(top_srcdir)/share/genbuild.sh qa/pull-tester/rpc-tests.py qa/rpc-tests $(DIST_DOCS) $(WINDOWS_PACKAGING) $(OSX_PACKAGING) $(BIN_CHECKS)
 
+EXTRA_DIST += \
+	    test/util/bitcoin-util-test.py \
+	    test/util/data/bitcoin-util-test.json \
+	    test/util/data/blanktxv1.hex \
+	    test/util/data/blanktxv1.json \
+	    test/util/data/tt-delin1-out.hex \
+	    test/util/data/tt-delin1-out.json \
+	    test/util/data/tt-delout1-out.hex \
+	    test/util/data/tt-delout1-out.json \
+	    test/util/data/tt-locktime317000-out.hex \
+	    test/util/data/tt-locktime317000-out.json \
+	    test/util/data/tx394b54bb.hex \
+	    test/util/data/txcreate1.hex \
+	    test/util/data/txcreate1.json \
+	    test/util/data/txcreate2.hex \
+	    test/util/data/txcreate2.json \
+	    test/util/data/txcreatescript1.hex \
+	    test/util/data/txcreatescript1.json \
+	    test/util/data/txcreatesign.hex \
+	    test/util/data/txcreatesign.json \
+	    test/util/rpcauth-test.py
+
 CLEANFILES = $(OSX_DMG) $(NAVCOIN_WIN_INSTALLER)
 
 # This file is problematic for out-of-tree builds if it exists.
