@@ -124,7 +124,7 @@ def utxo_to_stakingPrevOuts(utxo, stakingPrevOuts, txBlocktime, stakeModifier):
     :return
     '''
 
-    COINBASE_MATURITY = 50
+    COINBASE_MATURITY = 5
     if utxo['confirmations'] > COINBASE_MATURITY:
         outPoint = COutPoint(int(utxo['txid'], 16), utxo['vout'])
         stakingPrevOuts[outPoint] = (int(utxo['amount'])*COIN, txBlocktime, stakeModifier, "")
