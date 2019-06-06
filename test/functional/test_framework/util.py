@@ -296,6 +296,12 @@ def initialize_datadir(dirname, n):
         f.write("rpcport=" + str(rpc_port(n)) + "\n")
         f.write("listenonion=0\n")
         f.write("spendzeroconfchange=1\n")
+
+        # Check if we need to use localntp
+        if os.getenv("LOCAL_NTP", False):
+            logger.debug("Using local ntp server")
+            f.write("ntpserver=localhost\n")
+            f.write("ntpminmeasures=1\n")
     return datadir
 
 def rpc_auth_pair(n):
@@ -373,23 +379,13 @@ def sync_blocks(rpc_connections, *, wait=1, timeout=60):
     one node already synced to the latest, stable tip, otherwise there's a
     chance it might return before all nodes are stably synced.
     """
-    # Use getblockcount() instead of waitforblockheight() to determine the
-    # initial max height because the two RPCs look at different internal global
-    # variables (chainActive vs latestBlock) and the former gets updated
-    # earlier.
-    time.sleep(5)
-    maxheight = max(x.getblockcount() for x in rpc_connections)
-    start_time = cur_time = time.time()
-    while cur_time <= start_time + timeout:
-        tips = [r.waitforblockheight(maxheight, int(wait * 1000)) for r in rpc_connections]
-        if all(t["height"] == maxheight for t in tips):
-            if all(t["hash"] == tips[0]["hash"] for t in tips):
-                return
-            raise AssertionError("Block sync failed, mismatched block hashes:{}".format(
-                                 "".join("\n  {!r}".format(tip) for tip in tips)))
-        cur_time = time.time()
-    raise AssertionError("Block sync to height {} timed out:{}".format(
-                         maxheight, "".join("\n  {!r}".format(tip) for tip in tips)))
+    stop_time = time.time() + timeout
+    while time.time() <= stop_time:
+        best_hash = [x.getbestblockhash() for x in rpc_connections]
+        if best_hash.count(best_hash[0]) == len(rpc_connections):
+            return
+        time.sleep(wait)
+    raise AssertionError("Block sync timed out:{}".format("".join("\n  {!r}".format(b) for b in best_hash)))
 
 def sync_chain(rpc_connections, *, wait=1, timeout=60):
     """
