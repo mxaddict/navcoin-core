@@ -40,7 +40,7 @@ const char* GetTxnOutputType(txnouttype t)
     case TX_COLDSTAKING: return "cold_staking";
     case TX_POOL: return "pool_staking";
     }
-    return NULL;
+    return nullptr;
 }
 
 /**
