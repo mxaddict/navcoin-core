@@ -1,60 +1,71 @@
 --- a/qttools/src/linguist/linguist.pro
 +++ b/qttools/src/linguist/linguist.pro
-@@ -1,9 +1,7 @@
+@@ -4,17 +4,8 @@ requires(qtConfig(linguist))
+
  TEMPLATE = subdirs
  SUBDIRS  = \
+-    lconvert \
+-    lprodump \
      lrelease \
+-    lrelease-pro \
 -    lupdate \
--    lconvert
--!no-png:qtHaveModule(widgets): SUBDIRS += linguist
+-    lupdate-pro
+-!no-png:qtHaveModule(widgets) {
+-    QT_FOR_CONFIG += widgets
+-    qtConfig(process):qtConfig(pushbutton):qtConfig(toolbutton) {
+-        SUBDIRS += linguist
+-    }
 +    lupdate
+ }
 
  qtNomakeTools( \
-     linguist \
 --- a/qttools/src/src.pro
 +++ b/qttools/src/src.pro
-@@ -1,45 +1,6 @@
+@@ -1,48 +1,6 @@
  TEMPLATE = subdirs
 
 -qtHaveModule(widgets) {
 -    no-png {
 -        message("Some graphics-related tools are unavailable without PNG support")
 -    } else {
--        SUBDIRS = assistant \
--                  pixeltool \
--                  designer
+-        QT_FOR_CONFIG += widgets
+-        qtConfig(pushbutton):qtConfig(toolbutton) {
+-            SUBDIRS = assistant \
+-                      designer \
+-                      pixeltool
 -
--        linguist.depends = designer
+-            linguist.depends = designer
+-        }
+-        qtHaveModule(quick):qtConfig(thread):qtConfig(toolbutton): SUBDIRS += distancefieldgenerator
 -    }
 -}
 -
 -SUBDIRS += linguist \
--    qdoc \
 -    qtattributionsscanner
 -
 -qtConfig(library) {
 -    !android|android_app: SUBDIRS += qtplugininfo
 -}
 -
--if(!android|android_app):!uikit: SUBDIRS += qtpaths
+-include($$OUT_PWD/qdoc/qtqdoc-config.pri)
+-QT_FOR_CONFIG += qdoc-private
+-qtConfig(qdoc): qtConfig(thread): SUBDIRS += qdoc
 -
--mac {
+-!android|android_app: SUBDIRS += qtpaths
+-
+-macos {
 -    SUBDIRS += macdeployqt
--}
--
--android {
--    SUBDIRS += androiddeployqt
 -}
 -
 -qtHaveModule(dbus): SUBDIRS += qdbus
 -
 -win32|winrt:SUBDIRS += windeployqt
 -winrt:SUBDIRS += winrtrunner
--qtHaveModule(gui):!android:!uikit:!qnx:!winrt: SUBDIRS += qtdiag
+-qtHaveModule(gui):!wasm:!android:!uikit:!qnx:!winrt: SUBDIRS += qtdiag
 -
 -qtNomakeTools( \
+-    distancefieldgenerator \
 -    pixeltool \
--    macdeployqt \
 -)
 +SUBDIRS += linguist
 

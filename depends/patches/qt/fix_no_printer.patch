@@ -1,5 +1,5 @@
---- x/qtbase/src/plugins/platforms/cocoa/qprintengine_mac_p.h
-+++ y/qtbase/src/plugins/platforms/cocoa/qprintengine_mac_p.h
+--- a/qtbase/src/plugins/platforms/cocoa/qprintengine_mac_p.h
++++ b/qtbase/src/plugins/platforms/cocoa/qprintengine_mac_p.h
 @@ -52,6 +52,7 @@
  //
 
@@ -8,12 +8,12 @@
 
  #ifndef QT_NO_PRINTER
 
---- x/qtbase/src/plugins/plugins.pro
-+++ y/qtbase/src/plugins/plugins.pro
-@@ -8,6 +8,3 @@ qtHaveModule(gui) {
-     qtConfig(imageformatplugin): SUBDIRS *= imageformats
+--- a/qtbase/src/plugins/plugins.pro
++++ b/qtbase/src/plugins/plugins.pro
+@@ -9,6 +9,3 @@ qtHaveModule(gui) {
      !android:qtConfig(library): SUBDIRS *= generic
  }
+ qtHaveModule(widgets): SUBDIRS += styles
 -
 -!winrt:qtHaveModule(printsupport): \
 -    SUBDIRS += printsupport
