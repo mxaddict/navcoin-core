@@ -330,7 +330,7 @@ class RPCTestHandler:
                 if proc.poll() is not None:
                     try:
                         (stdout, stderr) = proc.communicate(timeout=10)
-                    except TimeoutExpired:
+                    except subprocess.TimeoutExpired:
                         proc.kill()
                         (stdout, stderr) = proc.communicate()
                     passed = stderr == "" and proc.returncode == 0
